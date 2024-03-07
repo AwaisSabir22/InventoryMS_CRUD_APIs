@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryMS_CRUD_APIs.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240304085538_initialMigrate")]
-    partial class initialMigrate
+    [Migration("20240305113423_updateMigration")]
+    partial class updateMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,23 @@ namespace InventoryMS_CRUD_APIs.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Electronics"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Clothes"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Grocery"
+                        });
                 });
 
             modelBuilder.Entity("InventoryMS_CRUD_APIs.Models.Product", b =>
@@ -51,6 +68,11 @@ namespace InventoryMS_CRUD_APIs.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("ProductDescription")
                         .HasColumnType("nvarchar(max)");
 
@@ -62,6 +84,32 @@ namespace InventoryMS_CRUD_APIs.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            CategoryId = 1,
+                            IsDeleted = false,
+                            ProductDescription = "Dell Inspiron 15 3000",
+                            ProductName = "Laptop"
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            CategoryId = 2,
+                            IsDeleted = false,
+                            ProductDescription = "Polo T-shirt",
+                            ProductName = "T-shirt"
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            CategoryId = 3,
+                            IsDeleted = false,
+                            ProductDescription = "Basmati Rice",
+                            ProductName = "Rice"
+                        });
                 });
 
             modelBuilder.Entity("InventoryMS_CRUD_APIs.Models.Product", b =>

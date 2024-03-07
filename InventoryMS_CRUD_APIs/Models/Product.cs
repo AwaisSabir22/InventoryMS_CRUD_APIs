@@ -7,6 +7,9 @@
 
         public string ?ProductDescription { get; set; }
 
+        //add a soft delete variable
+        public bool IsDeleted { get; set; }
+
         //foreign key property
         public int CategoryId { get; set; }
 

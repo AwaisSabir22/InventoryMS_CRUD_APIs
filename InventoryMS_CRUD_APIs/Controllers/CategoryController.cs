@@ -11,11 +11,17 @@ namespace InventoryMS_CRUD_APIs.Controllers
     public class CategoryController : Controller
     {
         private readonly ApplicationDBContext _context;
+
+        // Constructor to inject ApplicationDBContext dependency
         public CategoryController(ApplicationDBContext context)
         {
             _context = context;
         }
 
+       
+
+
+        /*----- CREATE -----*/
         //add new category API
         [HttpPost]
         public async Task<ActionResult<Category>> AddCategory(Category category)
@@ -34,6 +40,7 @@ namespace InventoryMS_CRUD_APIs.Controllers
                 
         }
 
+        /*----- READ -----*/
         //get all categories API
         [HttpGet]
         public IActionResult GetCategories()
@@ -45,16 +52,38 @@ namespace InventoryMS_CRUD_APIs.Controllers
                var categories = _context.Categories
                                               .Include(c => c.Products) // Include products
                                               .ToList();
-               // var categories = _context.Categories.ToList();
                 return Ok(categories);
             }
             catch (Exception e)
             {
                 return StatusCode(500, $"Internal server error: {e.Message}");
             }
-            
+
         }
 
+        /*------GET CATEGORY BY ID------*/
+        //get category by id API
+        [HttpGet("{id}")]
+        public IActionResult GetCategoryById(int id)
+        {
+            try
+            {
+                var category = _context.Categories.Find(id);
+
+                if (category == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+                return Ok(category);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+        }
+
+
+        /*----- UPDATE -----*/
         //edit category API
         [HttpPut("{id}")]
         public IActionResult UpdateCategory(int id, Category category)
@@ -75,7 +104,7 @@ namespace InventoryMS_CRUD_APIs.Controllers
             }
         }
 
-
+        /*----- DELETE -----*/
         //delete category API
         [HttpDelete("{id}")]
         public IActionResult DeleteCategory(int id)

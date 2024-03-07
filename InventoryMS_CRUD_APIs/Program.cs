@@ -7,15 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//add a Db Context
+/*
+ * configuring Entity Framework Core to use SQL Server as the database provider for the ApplicationDBContext
+ */
+//Services.AddDbContext used to register the ApplicationDBContext with the dependency injection container.
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //adding swagger to the project
 builder.Services.AddSwaggerGen();
 
-//Adding Json Controllers for Reference Handling
-//to handle Json responses to handle object references/object cycles without throwing an exception
+/* 
+ * Adding Json Controllers for Reference Handling
+ * to handle Json responses to handle object references/object cycles without throwing an exception
+ */
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
